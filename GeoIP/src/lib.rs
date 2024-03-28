@@ -20,9 +20,53 @@ pub struct geoip {
 	pub ext_flags: cty::c_uint,
 }
 
+pub struct newgeoip {
+	pub file_path: String,
+	pub cache: String,
+	pub index_cache: String,
+	pub database_segments: String,
+	pub database_type: char,
+	pub mtime: i64,
+	pub flags: i32,
+	pub size: u64,
+	pub record_length: char,
+	pub charset: i32,
+	pub record_iter: i32,
+	pub netmask: i32,
+	pub last_mtime_check: i64,
+	pub dyn_seg_size: u64,
+	pub ext_flags: u32,
+}
+
+fn geoip_to_new_geoip(gi: *mut geoip) -> newgeoip
+{
+	let mut gi2: newgeoip;
+	unsafe{
+		
+		gi2.file_path = CStr::from_ptr((*gi).file_path).to_str().expect("REASON").to_string();
+		gi2.cache = CStr::from_ptr((*gi).cache as *const i8).to_str().expect("REASON").to_string();
+		gi2.index_cache = CStr::from_ptr((*gi).index_cache as *const i8).to_str().expect("REASON").to_string();
+		gi2.database_segments = CStr::from_ptr((*gi).database_segments as *const i8).to_str().expect("REASON").to_string();
+		gi2.database_type = char::from_u32((*gi).database_type as u32).unwrap();
+		gi2.mtime = (*gi).mtime;
+		gi2.flags = (*gi).flags;
+		gi2.size = (*gi).size;
+		gi2.record_length = char::from_u32((*gi).record_length as u32).unwrap();
+		gi2.charset = (*gi).charset;
+		gi2.record_iter = (*gi).record_iter;
+		gi2.netmask = (*gi).netmask;
+		gi2.last_mtime_check = (*gi).last_mtime_check;
+		gi2.dyn_seg_size = (*gi).dyn_seg_size;
+		gi2.ext_flags = (*gi).ext_flags;
+		}
+	
+	return gi2
+}
+
 #[no_mangle]
 pub extern "C" fn geoip_enable_teredo(gi: *mut geoip, true_false: u32) -> u32
 {
+	let mut tmp: i32;
 	let mut mask: u32 = 1 << 0;
 	let mut b: u32 = 0;
 	unsafe
