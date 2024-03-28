@@ -40,7 +40,24 @@ pub struct newgeoip {
 
 fn geoip_to_new_geoip(gi: *mut geoip) -> newgeoip
 {
-	let mut gi2: newgeoip;
+	let mut gi2 = newgeoip
+	{
+		file_path: "".to_string(),
+		cache: "".to_string(),
+		index_cache: "".to_string(),
+		database_segments: "".to_string(),
+		database_type: 'a',
+		mtime: 0,
+		flags: 0,
+		size: 0,
+		record_length: 'a',
+		charset: 0,
+		record_iter: 0,
+		netmask: 0,
+		last_mtime_check: 0,
+		dyn_seg_size: 0,
+		ext_flags: 0,
+	};
 	unsafe{
 		
 		gi2.file_path = CStr::from_ptr((*gi).file_path).to_str().expect("REASON").to_string();
@@ -66,12 +83,11 @@ fn geoip_to_new_geoip(gi: *mut geoip) -> newgeoip
 #[no_mangle]
 pub extern "C" fn geoip_enable_teredo(gi: *mut geoip, true_false: u32) -> u32
 {
+	let mut gi2: newgeoip = geoip_to_new_geoip(gi);
 	let mut tmp: i32;
 	let mut mask: u32 = 1 << 0;
 	let mut b: u32 = 0;
-	unsafe
-	{
-	if (*gi).ext_flags == mask
+	if gi2.ext_flags == mask
 	{
 		b = 1;
 	}
@@ -79,17 +95,10 @@ pub extern "C" fn geoip_enable_teredo(gi: *mut geoip, true_false: u32) -> u32
 	{
 		b = 0;
 	}
-	}
-	unsafe
-	{
-	(*gi).ext_flags &= !mask;
-	}
+	gi2.ext_flags &= !mask;
 	if true_false != 0
 	{
-		unsafe
-		{
-		(*gi).ext_flags |= true_false;
-		}
+		gi2.ext_flags |= true_false;
 	}
 	print!("Called Rust GeoIP!\n");
 	return b;
