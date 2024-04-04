@@ -6,7 +6,6 @@ pub struct geoip {
 	pub file_path: *const cty::c_char,
 	pub cache: *const cty::c_uchar,
 	pub index_cache: *const cty::c_uchar,
-	pub database_segments: *const cty::c_uint,
 	pub database_type: cty::c_char,
 	pub mtime: cty::int64_t,
 	pub flags: cty::c_int,
@@ -24,7 +23,6 @@ pub struct newgeoip {
 	pub file_path: String,
 	pub cache: String,
 	pub index_cache: String,
-	pub database_segments: String,
 	pub database_type: char,
 	pub mtime: i64,
 	pub flags: i32,
@@ -60,9 +58,9 @@ fn geoip_to_new_geoip(gi: *mut geoip) -> newgeoip
 	};
 	unsafe{
 		
-		gi2.file_path = CStr::from_ptr((*gi).file_path).to_str().expect("REASON").to_string();
-		gi2.cache = CStr::from_ptr((*gi).cache as *const i8).to_str().expect("REASON").to_string();
-		gi2.index_cache = CStr::from_ptr((*gi).index_cache as *const i8).to_str().expect("REASON").to_string();
+		gi2.file_path = CStr::from_ptr((*gi).file_path).to_str().expect("Invalid file_path string").to_string();
+		gi2.cache = CStr::from_ptr((*gi).cache as *const i8).to_str().expect("Invalid cache string").to_string();
+		gi2.index_cache = CStr::from_ptr((*gi).index_cache as *const i8).to_str().expect("Invalid index_cache string").to_string();
 		gi2.database_segments = CStr::from_ptr((*gi).database_segments as *const i8).to_str().expect("REASON").to_string();
 		gi2.database_type = char::from_u32((*gi).database_type as u32).unwrap();
 		gi2.mtime = (*gi).mtime;
