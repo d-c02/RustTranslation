@@ -1,7 +1,28 @@
 # RustTranslation
-## Determining difficulty of translating C to memory-safe Rust.
 
-This repository is part of a project focusing on creating a software tool that can determine the difficulty of converting C code to Rust in a memory-safe way. The examples within the repository show how to convert certain C functions to Rust.
+## Overview
+Our goal is to generate tools which simplify transitioning C code to safe Rust.
+To do so, we would like to identify patterns in original C code which are easier to translate to safe Rust.
+As a first step, we would like to manually look into sample C code and determine whether they can be easily translated to safe Rust, by a beginner Rust developer.
+The first library we have considered is libGeoIP. We chose this library because it is both used in large programs (e.g., Nginx) and its code is easy to understand.
+We plan on extending our manual analysis to other libraries as well.
+
+## LibGeoIP
+TODO: What is libgeoIP? How many functions does it have?
+
+We have chosen two functions to analyze: `X` and `Y`. In the following section we will discuss each function separately.
+
+### Build libgeoIP with and without Rust
+We would like to translate part of libGeoIP to Rust and confirm that the functionality is not affected.
+To do so ...
+
+### Function `X`
+The first function we looked into is: `X`
+This function performs ... and is a leaf function (i.e., does not call any other function)
+
+### Function `Y`
+The second function we looked into is `Y`.
+This function performs ...
 
 GeoIP.c has certain functions taken from https://github.com/borisz/geoip-api-c/blob/master/libGeoIP/GeoIP.c in the GeoIP repository.
 
